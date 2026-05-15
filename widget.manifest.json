@@ -1,0 +1,111 @@
+{
+  "manifest_version": 1,
+  "id": "dev.mcpwidget.git",
+  "name": "Git",
+  "version": "0.0.1",
+  "description": "Local git operations and GitHub pull requests via the gh CLI.",
+  "mcp": {
+    "transport": "stdio",
+    "command": "node",
+    "args": ["./dist/index.js"]
+  },
+  "install": [
+    { "shell": "npm install" },
+    { "shell": "npm run build" }
+  ],
+  "auth": { "type": "none" },
+  "permissions": {
+    "filesystem": ["~"],
+    "network": ["api.github.com", "github.com"]
+  },
+  "storage": [
+    {
+      "key": "workspaces",
+      "type": "map",
+      "label": "Workspaces",
+      "description": "Saved workspaces as name → absolute path. Pick one with /workspace <name>."
+    },
+    {
+      "key": "active_workspace_name",
+      "type": "text",
+      "label": "Active workspace name",
+      "description": "Friendly name of the currently selected workspace (key into the workspaces map).",
+      "default": ""
+    },
+    {
+      "key": "active_workspace_path",
+      "type": "text",
+      "label": "Active workspace path",
+      "description": "Resolved path of the active workspace. Mirrored from workspaces[active_workspace_name] so other MCPs can read ${storage.dev.mcpwidget.git.active_workspace_path}.",
+      "default": "",
+      "hidden": true
+    }
+  ],
+  "quick_commands": [
+    {
+      "trigger": "workspace",
+      "description": "List, switch, add, or remove saved workspaces (the cwd every git command runs in)",
+      "storage_action": {
+        "key": "active_workspace_path",
+        "name_key": "active_workspace_name",
+        "select_from": "workspaces"
+      }
+    },
+    {
+      "trigger": "status",
+      "description": "Show git status in the active workspace",
+      "tool": "status",
+      "args": { "cwd": "${storage.active_workspace_path}" }
+    },
+    {
+      "trigger": "diff",
+      "description": "Show unstaged diff in the active workspace",
+      "tool": "diff",
+      "args": { "cwd": "${storage.active_workspace_path}" }
+    },
+    {
+      "trigger": "branches",
+      "description": "List branches in the active workspace",
+      "tool": "branch",
+      "args": { "cwd": "${storage.active_workspace_path}", "action": "list" }
+    },
+    {
+      "trigger": "commit",
+      "description": "Commit staged changes with a message",
+      "tool": "commit",
+      "arg_key": "message",
+      "args": { "cwd": "${storage.active_workspace_path}" },
+      "context_requirements": [
+        {
+          "key": "message",
+          "type": "text",
+          "label": "Commit message",
+          "required": true,
+          "multiline": true,
+          "placeholder": "What changed?"
+        }
+      ]
+    },
+    {
+      "trigger": "pr",
+      "description": "Open a PR (with optional body)",
+      "tool": "pr_create",
+      "args": { "cwd": "${storage.active_workspace_path}" },
+      "context_requirements": [
+        {
+          "key": "title",
+          "type": "text",
+          "label": "PR title",
+          "required": true
+        },
+        {
+          "key": "body",
+          "type": "text",
+          "label": "PR body (optional)",
+          "multiline": true,
+          "default": ""
+        }
+      ]
+    }
+  ]
+}
