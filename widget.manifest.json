@@ -49,25 +49,29 @@
         "key": "active_workspace_path",
         "name_key": "active_workspace_name",
         "select_from": "workspaces"
-      }
+      },
+      "platforms": ["desktop", "cli"]
     },
     {
       "trigger": "status",
       "description": "Show git status in the active workspace",
       "tool": "status",
-      "args": { "cwd": "${storage.active_workspace_path}" }
+      "args": { "cwd": "${storage.active_workspace_path}" },
+      "platforms": ["desktop", "cli"]
     },
     {
       "trigger": "diff",
       "description": "Show unstaged diff in the active workspace",
       "tool": "diff",
-      "args": { "cwd": "${storage.active_workspace_path}" }
+      "args": { "cwd": "${storage.active_workspace_path}" },
+      "platforms": ["desktop", "cli"]
     },
     {
       "trigger": "branches",
       "description": "List branches in the active workspace",
       "tool": "branch",
-      "args": { "cwd": "${storage.active_workspace_path}", "action": "list" }
+      "args": { "cwd": "${storage.active_workspace_path}", "action": "list" },
+      "platforms": ["desktop", "cli"]
     },
     {
       "trigger": "commit",
@@ -84,7 +88,8 @@
           "multiline": true,
           "placeholder": "What changed?"
         }
-      ]
+      ],
+      "platforms": ["desktop", "cli"]
     },
     {
       "trigger": "pr",
@@ -105,7 +110,8 @@
           "multiline": true,
           "default": ""
         }
-      ]
+      ],
+      "platforms": ["desktop", "cli"]
     }
   ]
 }
