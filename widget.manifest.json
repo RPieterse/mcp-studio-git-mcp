@@ -2,7 +2,7 @@
   "manifest_version": 1,
   "id": "dev.mcpwidget.git",
   "name": "Git",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Local git operations and GitHub pull requests via the gh CLI.",
   "mcp": {
     "transport": "stdio",
